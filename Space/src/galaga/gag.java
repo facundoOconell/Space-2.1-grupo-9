@@ -16,7 +16,7 @@ import java.util.Set;
 public class gag extends JPanel implements ActionListener {
 
     private static final int GAME_WIDTH = 1000;
-    private static final int GAME_HEIGHT = 800;
+    private static final int GAME_HEIGHT = 600;
 
     private Timer gameTimer, enemyMovementTimer, enemyShootingTimer, levelTransitionTimer;
     private List<Rectangle> bullets;
@@ -29,16 +29,16 @@ public class gag extends JPanel implements ActionListener {
     private Random random = new Random();
     private int waveNumber = 0;
     private int maxWaves = 5; // Aumentado a 5 oleadas
-    private int enemyMoveSpeed = 2; // Velocidad general de los enemigos
+    private int enemyMoveSpeed = 2; //
     private int bulletSpeed = 10;
     private int enemyBulletSpeed = 5;
     private boolean movingRight = true;
     private int enemyRowCount = 2;
     private int enemiesPerRow = 6;
     private int enemyVerticalStep = 50;
-    private int playerLives = 3;
+    private int playerLives = 999;
     private boolean transitioningToNextLevel = false;
-    private int levelTransitionDelay = 5000; // 5 segundos
+    private int levelTransitionDelay = 500; // 5 segundos
 
     private boolean showVictoryMessage = false;
     
@@ -47,7 +47,7 @@ public class gag extends JPanel implements ActionListener {
 
     // Contador de balas disparadas y máximo permitido
     private int bulletsShot = 0;
-    private final int MAX_BULLETS = 500 ;
+    private final int MAX_BULLETS = 800 ;
     
     private Image playerSprite;
     private Image enemySprite1;
@@ -62,15 +62,15 @@ public class gag extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
         setBackground(Color.BLUE);
         setFocusable(true);
-        playerSprite = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\nave-galaga.png").getImage();
+        playerSprite = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\nave-galaga.png").getImage();
         
-        enemySprite1 = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\enemigo1.png").getImage();
-        enemySprite2 = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\enemigo2.png").getImage();
-        bossSprite = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\boss-final.png").getImage();
-        backgroundImage = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\fondo.png").getImage();    
-        enemySprite3 = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\enemigo2.png").getImage();
-        enemySprite4 = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\ocho-final.png").getImage();
-        enemySprite5 = new ImageIcon("C:\\Users\\Sergio\\Documents\\Space\\src\\sprays\\enemigo1.png").getImage();
+        enemySprite1 = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\enemigo1.png").getImage();
+        enemySprite2 = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\enemigo2.png").getImage();
+        bossSprite = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\boss-final.png").getImage();
+        backgroundImage = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\fondo.png").getImage();    
+        enemySprite3 = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\enemigo2.png").getImage();
+        enemySprite4 = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\ocho-final.png").getImage();
+        enemySprite5 = new ImageIcon("C:\\Users\\Alumno\\Downloads\\Space-2.1-grupo-9-main\\Space\\src\\sprays\\enemigo1.png").getImage();
 
         
         
@@ -229,7 +229,7 @@ public class gag extends JPanel implements ActionListener {
                     }
                 } else if (waveNumber == 3) {
                     // Cuarta oleada, nave dispara 3 balas
-                    int numBullets = 3;
+                    int numBullets = 4;
                     int bulletSpacing = 20; // Ajustado para mayor separación
                     for (int i = -numBullets / 2; i <= numBullets / 2; i++) {
                         enemyBullets.add(new Rectangle(bulletX + i * bulletSpacing, bulletY, 4, 10));
@@ -261,21 +261,21 @@ public class gag extends JPanel implements ActionListener {
             Enemy toughEnemy = new Enemy(x, y, 80, 50, 20, false, gameWon); // Enemigo con 20 de vida
             enemies.add(toughEnemy);
             enemyColors.add(currentWaveColor);
+            enemyMoveSpeed = 9;
         } else if (waveNumber == 4) {
             int x = GAME_WIDTH / 2 - 300 / 2; // Centrando el jefe (ancho 300)
             int y = 50;
             Enemy boss = new Enemy(x, y, 300, 150, 50, true, gameWon); // Jefe más grande, con más vida
             enemies.add(boss);
             enemyColors.add(currentWaveColor);
-            enemyMoveSpeed = 2; // Velocidad de movimiento del jefe
+            enemyMoveSpeed = 10; // Velocidad de movimiento del jefe
         } else {
             for (int row = 0; row < enemyRowCount; row++) {
                 for (int col = 0; col < enemiesPerRow; col++) {
                     int x = startX + col * 100;
                     int y = startY + row * 70;
-
                     boolean isKamikaze = (waveNumber == 2 && row == 0 && col < 3); // 3 kamikazes en la primera fila
-                    int health = isKamikaze ? 3 : 1; // Si es kamikaze, vida = 3, de lo contrario, vida = 1
+                    int health = isKamikaze ? 25 : 3  ; // Si es kamikaze, vida = 3, de lo contrario, vida = 1
                     Enemy enemy = new Enemy(x, y, 80, 50, health, false, isKamikaze); // Agregar parámetro kamikaze
                     enemies.add(enemy);
                     enemyColors.add(currentWaveColor); 
@@ -283,12 +283,6 @@ public class gag extends JPanel implements ActionListener {
             }
         }
     }
-
-
-    
-
-
-
 
     private void moveEnemies() {
         if (transitioningToNextLevel) return;
@@ -493,7 +487,7 @@ public class gag extends JPanel implements ActionListener {
         for (Rectangle bullet : bullets) {
             for (Enemy enemy : enemies) {
                 if (bullet.intersects(enemy.getBounds())) {
-                    enemy.damage();
+                    enemy.takeDamage(1); // Reduce la vida del enemigo en 1
                     bulletsToRemove.add(bullet);
                     if (enemy.getHealth() <= 0) {
                         enemiesToRemove.add(enemy);
@@ -501,7 +495,6 @@ public class gag extends JPanel implements ActionListener {
                 }
             }
         }
-
         bullets.removeAll(bulletsToRemove);
         enemies.removeAll(enemiesToRemove);
 
@@ -561,10 +554,13 @@ public class gag extends JPanel implements ActionListener {
         for (Enemy enemy : enemies) {
             for (Barrier barrier : barriers) {
                 if (enemy.getBounds().intersects(barrier.getBounds())) {
-                    enemiesToRemove.add(enemy);
-                    barrier.damage();
+                    enemy.takeDamage(barrier.getHealth()); // Reduce la vida del enemigo según la salud de la barrera
+                    barrier.damage(); // La barrera recibe daño
                     if (barrier.getHealth() <= 0) {
                         barriersToRemove.add(barrier);
+                    }
+                    if (enemy.getHealth() <= 0) {
+                        enemiesToRemove.add(enemy);
                     }
                 }
             }
@@ -583,7 +579,7 @@ public class gag extends JPanel implements ActionListener {
             }
         }
         enemies.removeAll(enemiesToRemove);
-    }                       
+    }
 
     private void stopTimers() {
         gameTimer.stop();
@@ -626,8 +622,8 @@ public class gag extends JPanel implements ActionListener {
             return health;
         }
 
-        public void damage() {
-            health--; // Disminuye la salud en 1
+        public void takeDamage(int amount) {
+            health -= amount; // Disminuye la salud en la cantidad indicada
         }
 
         public Rectangle getBounds() {
@@ -642,6 +638,7 @@ public class gag extends JPanel implements ActionListener {
             return isKamikaze;
         }
     }
+
 
 
     private class Barrier {
@@ -676,13 +673,14 @@ public class gag extends JPanel implements ActionListener {
         }
 
         public void damage() {
-            health--;
+            health--; // Reduce la salud en 1
         }
 
         public Rectangle getBounds() {
             return new Rectangle(x, y, width, height);
         }
     }
+
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Galaga");
